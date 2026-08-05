@@ -1,8 +1,6 @@
 # Jigsaw Jeeves
 
-Jigsaw Jeeves is a Python library that acts as a computer-vision assistant for solving jigsaw puzzles. Rather than solving the puzzle for you, it tells you where each piece most likely belongs -- narrowing a thousands-of-piece search to a small ranked candidate list so you can make progress when you are stuck.
-
-The concept and implementation are described in detail in [this article](https://medium.com) *(link to be added on publication)*.
+A Python library that acts as a computer-vision assistant for solving jigsaw puzzles. Rather than solving the puzzle for you, it tells you where each piece most likely belongs, narrowing the search space to a small ranked candidate list so you can make progress when you are stuck.
 
 ---
 
@@ -12,7 +10,9 @@ The concept and implementation are described in detail in [this article](https:/
 pip install jigsaw-jeeves
 ```
 
-Requires Python 3.12 or above. Dependencies (`opencv-python`, `numpy`, `scipy`) are installed automatically.
+Requires Python 3.12 or above. 
+
+Dependencies (`opencv-python`, `numpy`, `scipy`) are installed automatically.
 
 ---
 
@@ -87,15 +87,10 @@ A `dict` mapping each scrambled tile position `(row, col)` to a ranked list of u
 
 ## How It Works
 
-The pipeline overlays an R-by-C grid on both images and treats each grid cell as the unit of comparison. Each cell is represented as a 513-dimensional feature vector: a normalized 3-D RGB color histogram (512 values) and a single edge-density scalar. Cosine similarity is used to measure how closely a scrambled tile matches each reference tile, and the Hungarian algorithm finds the globally optimal bijective assignment -- guaranteeing that every scrambled tile is matched to a unique reference position.
-
----
-
-## Limitations
-
-- **Visually uniform regions** (large areas of sky, water, or grass) produce nearly identical feature vectors across multiple tiles; assignments in those regions may be essentially arbitrary.
-- **Photo quality matters**: uneven lighting, shadows, and perspective distortion degrade similarity scores. Photograph pieces on a well-lit, flat, contrasting surface from directly overhead for best results.
-- **Grid must match physical layout**: the `grid` parameter (or the auto-inferred value) must reflect how the pieces are arranged before photographing. A mismatch produces incorrect tile boundaries and unreliable results.
+- The pipeline overlays an R-by-C grid on both images and treats each grid cell as the unit of comparison.
+- Each cell is represented as a 513-dimensional feature vector: a normalized 3-D RGB color histogram (512 values) and a single edge-density scalar.
+- Cosine similarity is used to measure how closely a scrambled tile matches each reference tile.
+- The Hungarian algorithm finds the globally optimal bijective assignment, guaranteeing that every scrambled tile is matched to a unique reference position.
 
 ---
 
